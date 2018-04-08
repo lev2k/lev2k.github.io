@@ -1,12 +1,72 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="http://html5-templates.com/" />
+    <title>Raspberry PI 2 + DHT22</title>
+    <meta name="description" content="Simple HTML5 Page layout template with header, footer, sidebar etc.">
+    <link rel="stylesheet" href="style.css">
+	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+	<script type="text/javascript" src="//thingspeak.com/highcharts-3.0.8.js"></script>
+    <script type="text/javascript" src="//thingspeak.com/exporting.js"></script>
+    <script src="script.js"></script>
+	<script src="chart.js"></script>
+</head>
+
 <body>
-<p>Temperatur und Luftfeuchtigkeit</p>
-<iframe style="border: 1px solid rgb(204, 204, 204);" src="http://api.thingspeak.com/channels/467830/charts/1?width=800&amp;height=300&amp;timescale=15&amp;results=1000&amp;days=5&amp;dynamic=true&amp;yaxis=Temperature&amp;xaxis=Date%2FTime&amp;title=Family%20Room" width="800" height="300"></iframe>
-<iframe width="300" height="300" style="border: 1px solid #cccccc;" src="https://thingspeak.com/apps/plugins/222172"></iframe>
-<iframe width="300" height="300" style="border: 1px solid #cccccc;" src="https://thingspeak.com/apps/plugins/222173"></iframe>
-<iframe width="800" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/467830/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line"></iframe>
-<iframe width="800" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/467830/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line"></iframe>
-<iframe width="900" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/apps/plugins/222181"></iframe>
+	<header>
+		<div id="logo"><img src="http://html5-templates.com/logo.png">Raspberry PI 2 + DHT22</div>
+		<nav>  
+			<ul>
+				<li><a href="/html5">Neu laden</a>
+				
+			</ul>
+		</nav>
+	</header>
+	<section>
+		<!-- <strong>Demonstration of a simple page layout using HTML5 tags: header, nav, section, main, article, aside, footer, address.</strong> -->
+	</section>
+	<section id="pageContent">
+		<main role="main">
+			<article>
+				<h2>Temperatur und Luftfeuchtigkeit in Echtzeit</h2>
+				<div id="gauge1_div"></div>
+				<div id="gauge2_div"></div></p>
+				
+			</article>
+			<article>
+				<!-- <h2>Illud mollis moderatius</h2>
+				<p><!-- <iframe style="border: 1px solid rgb(204, 204, 204);" src="http://api.thingspeak.com/channels/467830/charts/1?width=1300&amp;height=400&amp;timescale=30;results=500&amp;days=5&amp;dynamic=true&amp;yaxis=Temperature&amp;xaxis=Date%2FTime&amp;title=Temperatur" width="100%" height="400"></iframe>
+				</p> -->
+			</article>
+			<article>
+				<h2>Temperatur und Luftfeuchtigkeit</h2>
+				<p></p>
+				<div id="chart-container"></div>
+			</article>
+			<article>
+				<!-- <h2>Test-Chart</h2>
+				 -->
+				
+			</article>
+		</main>
+		<!-- <aside>
+			<div></div>
+			<div></div>
+			<div></div>
+		</aside> -->
+	</section>
+		<footer>
+		<!-- <p>&copy; You can copy and edit and publish this template but please leave a link to our website | <a href="http://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
+		<address>
+			Contact: <a href="mailto:me@htmlg.com">Mail me</a>
+		</address> -->
+	</footer>
+
+
 </body>
+
 </html>
