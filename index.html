@@ -1,72 +1,190 @@
-<!doctype html>
-<html lang="en" class="no-js">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="canonical" href="http://html5-templates.com/" />
-    <title>Raspberry PI 2 + DHT22</title>
-    <meta name="description" content="Simple HTML5 Page layout template with header, footer, sidebar etc.">
-    <link rel="stylesheet" href="style.css">
-	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
-	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
-	<script type="text/javascript" src="//thingspeak.com/highcharts-3.0.8.js"></script>
-    <script type="text/javascript" src="//thingspeak.com/exporting.js"></script>
-    <script src="script.js"></script>
-	<script src="chart.js"></script>
-</head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+	<meta http-equiv="refresh" content="300" />
 
-<body>
-	<header>
-		<div id="logo"><img src="http://html5-templates.com/logo.png">Raspberry PI 2 + DHT22</div>
-		<nav>  
-			<ul>
-				<li><a href="/html5">Neu laden</a>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script type="text/javascript">
+    $(function () {
+      var seriesOptions = [],
+          seriesCounter = 0,
+          channels = [{
+              url:'https://www.thingspeak.com/channels/467830/feed.json?dynamic=true&amp;callback=?&amp;offset=0&amp;results=2000;key=H476NZRMBXE78R8S&amp;round=2',
+              fields: [
+                {name:'field1',axe:0,sign:'°C'},
+                {name:'field2',axe:1,sign:'%'}
+              ]
+            }/* , {
+              url:'https://www.thingspeak.com/channels/108556/feed.json?callback=?&amp;offset=0&amp;results=500;key=5CJSVZZZZ8IPE2X8',
+              fields: [
+                {name:'field1',axe:2,sign:'°C'},
+                {name:'field2',axe:3,sign:'%'}
+              ]
+          } */],
+          myOffset = new Date().getTimezoneOffset();
+
+      function getChartDate(d,r) { // Date.UTC(year, month[, day[, hour[, minute[, second[, millisecond]]]]])
+        return Math.round((Date.UTC(d.substring(0,4), d.substring(5,7)-1, d.substring(8,10), d.substring(11,13), d.substring(14,16), d.substring(17,19)) - (myOffset * 60000))/r)*r;
+      }
+
+      function createChart() {
+        $('#container').highcharts('StockChart', {
+			chart: {
+				style: {
+					fontSize: '15px',
+					color: 'red'
+				},
+				backgroundColor: '#fff',
+				/* type: 'line' */
 				
-			</ul>
-		</nav>
-	</header>
-	<section>
-		<!-- <strong>Demonstration of a simple page layout using HTML5 tags: header, nav, section, main, article, aside, footer, address.</strong> -->
-	</section>
-	<section id="pageContent">
-		<main role="main">
-			<article>
-				<h2>Temperatur und Luftfeuchtigkeit in Echtzeit</h2>
-				<div id="gauge1_div"></div>
-				<div id="gauge2_div"></div></p>
 				
-			</article>
-			<article>
-				<!-- <h2>Illud mollis moderatius</h2>
-				<p><!-- <iframe style="border: 1px solid rgb(204, 204, 204);" src="http://api.thingspeak.com/channels/467830/charts/1?width=1300&amp;height=400&amp;timescale=30;results=500&amp;days=5&amp;dynamic=true&amp;yaxis=Temperature&amp;xaxis=Date%2FTime&amp;title=Temperatur" width="100%" height="400"></iframe>
-				</p> -->
-			</article>
-			<article>
-				<h2>Temperatur und Luftfeuchtigkeit</h2>
-				<p></p>
-				<div id="chart-container"></div>
-			</article>
-			<article>
-				<!-- <h2>Test-Chart</h2>
-				 -->
+			},
+			tooltip: {
+            style: {
+			fontSize: '15px',
+            /* color: 'blue', */
+            fontWeight: 'bold'
+			}
+        },
+			
+          title: {text: 'Raspberry PI + DHT22'},
+          legend: {
+			  
+            enabled: true,
+            labelFormatter: function() {
+              return '<span style="color:' + this.color + '">' + this.name + ' : </span>' + this.options.data[this.options.data.length - 1][1] + this.options._sign + '</n>';
+            },
+			
+			itemStyle: {
+                 font: '24pt Trebuchet MS, Verdana, sans-serif',
+				 fontWeight: 'bolder'
+              }
+          },
+          rangeSelector : {
+            allButtonsEnabled: true,
+            buttonTheme: {width: 80},
+            selected: 1,
+            buttons: [
+              {type: 'minute',count: 360,text: '6 Stunden'},
+              {type: 'hour',count: 24,text: '24 Stunden'},
+			  {type: 'day',count: 3,text: '3 Tage'},
+			  {type: 'week',count: 1,text: '1 Woche'},
+              {type: 'all',text: 'All'}
+            ]
+          },
+          colors: ['#fd8181', '#2f7ed8', '#fd8181', '#2f7ed8'],
+          symbols: ['circle'],
+		  
+		   yAxis: [{ // Primary yAxis
+        labels: {
+            format: '{value}°C',
+			align: 'left',
+            style: {
+				fontSize: '12px',
+                color: '#fd8181',
+				fontWeight: 'bold'
+            }
+        },
+        title: {
+            text: 'Temperatur in °C',
+            style: {
+                color: '#fd8181',
+				fontWeight: 'bold'
+            }
+        },
+		height: '100%', opposite: true,
+            lineWidth: 2, offset: 0
+    },
+		  
+          /* yAxis: [{
+            labels: {align: 'right'}, title: {text: 'Temperatur in °C'},
+			
+            height: '100%', opposite: false,
+            lineWidth: 2, offset: 0
+			
+			
+          }, */ 
+		  /* {
+            labels: {align: 'left'}, title: {text: 'Luftfeuchtigkeit in %'},
+            height: '100%', lineWidth: 2,
+			
+          } */
+		  
+		  {
+		  labels: {
+            format: '{value}%',
+			align: 'left',
+            style: {
+				fontSize: '12px',
+                color: '#2f7ed8',
+				fontWeight: 'bold',
 				
-			</article>
-		</main>
-		<!-- <aside>
-			<div></div>
-			<div></div>
-			<div></div>
-		</aside> -->
-	</section>
-		<footer>
-		<!-- <p>&copy; You can copy and edit and publish this template but please leave a link to our website | <a href="http://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
-		<address>
-			Contact: <a href="mailto:me@htmlg.com">Mail me</a>
-		</address> -->
-	</footer>
+				
+            
+			
+		  }
+		  }
+        },
+			{
+			 title: {
+				text: 'Luftfeuchtigkeit in %',
+				style: {
+                color: '#2f7ed8',
+				fontWeight: 'bold'
+            }
+				},
+				height: '100%', lineWidth: 2
+			}				
+           
+		  
+		  
+		  
+		  
+		  
+		  /* , {
+            labels: {align: 'right'}, title: {text: 'outTemperature'},
+            top: '51%', height: '49%',
+            opposite: false, lineWidth: 2, offset: 0
+          }, {
+            labels: {align: 'right',x:30}, title: {text: 'outHumidity',x:30},
+            top: '51%', height: '49%',
+            lineWidth: 2, offset: 0
+          } */],
+          series: seriesOptions
+        });
+      }
 
-
-</body>
-
+      $.each(channels, function (i, channel) { // for every channel
+        $.getJSON(channel.url, function (data) { // we load data from thingspeak
+          $.each(channel.fields, function(j, field) { // for every declared field we create seriesOptions & store there data
+            var pos=seriesOptions.length;
+            seriesOptions[pos] = {
+              name: data.channel[field.name],
+              _sign: field.sign,
+              yAxis: field.axe,
+              marker : {enabled : true, radius : 3},
+              data: []
+            };
+            for (var k=0; k<data.feeds.length; k++) {
+              seriesOptions[pos].data.push([getChartDate(data.feeds[k].created_at,600000),parseFloat(data.feeds[k][field.name])]);
+            }
+          });
+          seriesCounter += 1;
+          if (seriesCounter === channels.length) {
+            //window.console && console.log(JSON.stringify(seriesOptions));
+            createChart();
+          }
+        });
+      });
+    });
+    </script>
+    <title>Raspberry PI + DHT22</title>
+  </head>
+  <body bgcolor="#E2D8BE">
+    <div id="container" style="height: 650px;"><br>
+    Raspberry PI + DHT22<br>
+    </div>
+  </body>
 </html>
